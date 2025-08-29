@@ -17,11 +17,7 @@ class CreditScoreViewModel @Inject constructor(
     private val _creditReport = MutableStateFlow<CreditReportUiState>(CreditReportUiState.Loading)
     val creditReport = _creditReport.asStateFlow()
 
-    init {
-        fetchCreditReport()
-    }
-
-    private fun fetchCreditReport() {
+    internal fun fetchCreditReport() {
         viewModelScope.launch {
             try {
                 val report = repository.getCreditReport()
