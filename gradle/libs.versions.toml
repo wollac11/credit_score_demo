@@ -14,6 +14,9 @@ retrofit = "3.0.0"
 hilt = "2.57.1"
 lifecycle = "2.9.3"
 coroutines = "1.10.2"
+mockk = "1.14.5"
+kotlinxCoroutinesTest = "1.10.2"
+turbine = "1.2.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -40,6 +43,9 @@ androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-view
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
