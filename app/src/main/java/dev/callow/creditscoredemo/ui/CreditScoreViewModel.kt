@@ -19,6 +19,7 @@ class CreditScoreViewModel @Inject constructor(
 
     internal fun fetchCreditReport() {
         viewModelScope.launch {
+            _creditReport.value = CreditReportUiState.Loading // always set back to loading state
             try {
                 val report = repository.getCreditReport()
                 _creditReport.value = CreditReportUiState.Success(report)
