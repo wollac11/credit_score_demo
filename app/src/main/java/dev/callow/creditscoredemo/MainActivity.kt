@@ -21,6 +21,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -98,17 +99,18 @@ fun CreditScoreScreen(uiState: CreditReportUiState, modifier: Modifier = Modifie
 
 @Composable
 fun DonutView(value: Int, maxValue: Int, strokeWidth: Dp = 20.dp, size: Dp = 250.dp, label: String = "") {
-    val angle = 360f * value / maxValue.toFloat()
+    val angle = remember(value, maxValue) { 360f * value / maxValue.toFloat() }
 
     Box(contentAlignment = Alignment.Center, modifier = Modifier.requiredSize(size)) {
         Canvas(modifier = Modifier.size(size)) {
+            val strokeWidthPx = strokeWidth.toPx()
             // Background arc
             drawArc(
                 color = Color.LightGray,
                 startAngle = 0f,
                 sweepAngle = 360f,
                 useCenter = false,
-                style = Stroke(width = strokeWidth.toPx())
+                style = Stroke(width = strokeWidthPx)
             )
             // Foreground arc
             drawArc(
@@ -116,7 +118,7 @@ fun DonutView(value: Int, maxValue: Int, strokeWidth: Dp = 20.dp, size: Dp = 250
                 startAngle = -90f, // Start from the top
                 sweepAngle = angle,
                 useCenter = false,
-                style = Stroke(width = strokeWidth.toPx(), cap = StrokeCap.Round)
+                style = Stroke(width = strokeWidthPx, cap = StrokeCap.Round)
             )
         }
         Column {
