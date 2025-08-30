@@ -16,9 +16,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -78,28 +81,42 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun CreditScoreScreen(uiState: CreditReportUiState, modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        when (uiState) {
-            is CreditReportUiState.Loading -> {
-                CircularProgressIndicator()
-            }
+    val snackbarHostState = remember { SnackbarHostState() }
 
-            is CreditReportUiState.Success -> {
-                val creditInfo = uiState.report.creditReportInfo
-                DonutView(
-                    value = creditInfo.score,
-                    maxValue = creditInfo.maxScoreValue,
-                    label = stringResource(R.string.credit_score_label)
-                )
-            }
+    LaunchedEffect(uiState) {
+        if (uiState is CreditReportUiState.Error) {
+            val errorMessage = uiState.message
+            snackbarHostState.showSnackbar(message = errorMessage)
+        }
+    }
 
-            is CreditReportUiState.Error -> {
-                Text(
-                    text = "Error: ${uiState.message}"
-                )
+    Scaffold(snackbarHost = { SnackbarHost(hostState = snackbarHostState) }) { padding ->
+        Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            when (uiState) {
+                is CreditReportUiState.Loading -> {
+                    CircularProgressIndicator()
+                }
+
+                is CreditReportUiState.Success -> {
+                    val creditInfo = uiState.report.creditReportInfo
+                    DonutView(
+                        value = creditInfo.score,
+                        maxValue = creditInfo.maxScoreValue,
+                        label = stringResource(R.string.credit_score_label)
+                    )
+                }
+
+                is CreditReportUiState.Error -> {
+                    Text(
+                        text = stringResource(R.string.credit_score_unavailable),
+                        modifier = Modifier
+                            .wrapContentSize(Alignment.Center)
+                            .padding(16.dp),
+                        textAlign = TextAlign.Center,
+                        fontSize = 18.sp,
+                        color = Color.Gray
+                    )
+                }
             }
         }
     }
