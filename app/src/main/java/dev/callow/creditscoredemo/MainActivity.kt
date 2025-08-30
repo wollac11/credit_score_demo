@@ -134,7 +134,7 @@ fun DonutView(value: Int, maxValue: Int, strokeWidth: Dp = 20.dp, size: Dp = 250
                 color = Color.Black,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.Light,
                 fontSize = (size.value / 4).dp.value.toInt().sp // Adjust font size based on diameter
             )
             // Max value
