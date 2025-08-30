@@ -109,7 +109,7 @@ fun DonutView(value: Int, maxValue: Int, strokeWidth: Dp = 4.dp, size: Dp = 250.
             val strokeWidthPx = strokeWidth.toPx()
             // Outer ring
             drawArc(
-                color = Color.LightGray,
+                color = Color(0xFF757575),
                 startAngle = 0f,
                 sweepAngle = 360f,
                 useCenter = false,
@@ -171,11 +171,11 @@ fun DonutViewPreview() {
 @Composable
 fun determineScoreColor(value: Int, maxValue: Int): Color {
     if (maxValue == 0) return Color.Gray // Handle division by zero or invalid max
-    val percentage = value.toFloat() / maxValue.toFloat()
+    val percentage = value.toFloat() / maxValue
     return when {
-        percentage <= 0.25f -> Color.Red
-        percentage <= 0.50f -> Color(0xFFFFA500) // Orange
-        percentage <= 0.75f -> Color.Yellow
-        else -> Color.Green
+        percentage <= 0.25f -> Color(0xFFE57373) // Red
+        percentage <= 0.50f -> Color(0xFFFFB74D) // Orange
+        percentage <= 0.75f -> Color(0xFFFFF176) // Yellow
+        else -> Color(0xFF81C784) // Green
     }
 }
