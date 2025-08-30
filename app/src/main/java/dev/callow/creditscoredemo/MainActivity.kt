@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
@@ -105,7 +106,7 @@ fun CreditScoreScreen(uiState: CreditReportUiState, modifier: Modifier = Modifie
 }
 
 @Composable
-fun DonutView(value: Int, maxValue: Int, strokeWidth: Dp = 4.dp, size: Dp = 250.dp, label: String = "") {
+fun DonutView(value: Int, maxValue: Int, strokeWidth: Dp = 4.dp, size: Dp = 250.dp, label: String = "", animationDurationMillis: Int = 1000) {
     val angle = remember(value, maxValue) { 360f * value / maxValue.toFloat() }
     val scoreColor = determineScoreColor(value = value, maxValue = maxValue) // Determine colour based on score
     var animationPlayed by remember { mutableStateOf(false) }
@@ -113,8 +114,15 @@ fun DonutView(value: Int, maxValue: Int, strokeWidth: Dp = 4.dp, size: Dp = 250.
     // Score arc animation (run when first displayed or value changes)
     val animatedAngle by animateFloatAsState(
         targetValue = if (animationPlayed) angle else 0f,
-        animationSpec = tween(durationMillis = 1000),
+        animationSpec = tween(durationMillis = animationDurationMillis),
         label = "DonutViewAngleAnimation"
+    )
+
+    // Value text animation (run when first displayed or value changes)
+    val animatedValue by animateIntAsState(
+        targetValue = if (animationPlayed) value else 0,
+        animationSpec = tween(durationMillis = animationDurationMillis),
+        label = "DonutViewValueAnimation"
     )
 
     LaunchedEffect(key1 = true) {
@@ -155,7 +163,7 @@ fun DonutView(value: Int, maxValue: Int, strokeWidth: Dp = 4.dp, size: Dp = 250.
             )
             // Value
             Text(
-                text = value.toString(),
+                text = animatedValue.toString(),
                 color = scoreColor,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
