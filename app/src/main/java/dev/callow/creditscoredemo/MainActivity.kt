@@ -98,7 +98,7 @@ fun CreditScoreScreen(uiState: CreditReportUiState, modifier: Modifier = Modifie
 }
 
 @Composable
-fun DonutView(value: Int, maxValue: Int, strokeWidth: Dp = 20.dp, size: Dp = 250.dp, label: String = "") {
+fun DonutView(value: Int, maxValue: Int, strokeWidth: Dp = 10.dp, size: Dp = 250.dp, label: String = "") {
     val angle = remember(value, maxValue) { 360f * value / maxValue.toFloat() }
 
     Box(contentAlignment = Alignment.Center, modifier = Modifier.requiredSize(size)) {
