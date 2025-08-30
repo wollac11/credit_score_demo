@@ -84,7 +84,7 @@ fun CreditScoreScreen(uiState: CreditReportUiState, modifier: Modifier = Modifie
                 DonutView(
                     value = creditInfo.score,
                     maxValue = creditInfo.maxScoreValue,
-                    label = "Your credit score is:"
+                    label = stringResource(R.string.credit_score_label)
                 )
             }
 
@@ -141,7 +141,7 @@ fun DonutView(value: Int, maxValue: Int, strokeWidth: Dp = 20.dp, size: Dp = 250
             )
             // Max value
             Text(
-                text = "out of $maxValue",
+                text = stringResource(R.string.total_score_label, maxValue),
                 color = Color.Black,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
@@ -157,7 +157,7 @@ fun DonutView(value: Int, maxValue: Int, strokeWidth: Dp = 20.dp, size: Dp = 250
 fun DonutViewPreview() {
     CreditScoreDemoTheme {
         Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-            DonutView(value = 327, maxValue = 700, label = "Your credit score is:")
+            DonutView(value = 327, maxValue = 700, label = stringResource(R.string.credit_score_label))
         }
     }
 }

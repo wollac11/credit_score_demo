@@ -1,8 +1,11 @@
 package dev.callow.creditscoredemo.ui
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dev.callow.creditscoredemo.R
 import dev.callow.creditscoredemo.data.repository.CreditReportRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -11,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreditScoreViewModel @Inject constructor(
-    private val repository: CreditReportRepository
+    private val repository: CreditReportRepository,
+    @param:ApplicationContext private val applicationContext: Context
 ) : ViewModel() {
 
     private val _creditReport = MutableStateFlow<CreditReportUiState>(CreditReportUiState.Loading)
@@ -25,7 +29,7 @@ class CreditScoreViewModel @Inject constructor(
                 _creditReport.value = CreditReportUiState.Success(report)
             } catch (e: Exception) {
                 _creditReport.value =
-                    CreditReportUiState.Error(e.message ?: "An unknown error occurred")
+                    CreditReportUiState.Error(e.message ?: applicationContext.getString(R.string.unknown_error))
             }
         }
     }
