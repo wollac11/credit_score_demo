@@ -1,5 +1,6 @@
 package dev.callow.creditscoredemo.ui
 
+import android.util.Log
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -28,8 +29,9 @@ class CreditScoreViewModel @Inject constructor(
                 val report = repository.getCreditReport()
                 _creditReport.value = CreditReportUiState.Success(report)
             } catch (e: Exception) {
+                Log.d("CreditScoreViewModel", "Error fetching credit report: ${e.message}")
                 _creditReport.value =
-                    CreditReportUiState.Error(e.message ?: applicationContext.getString(R.string.unknown_error))
+                    CreditReportUiState.Error(applicationContext.getString(R.string.fetch_error))
             }
         }
     }

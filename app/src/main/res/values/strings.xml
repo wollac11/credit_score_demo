@@ -4,4 +4,5 @@
     <string name="total_score_label">out of %1$d</string>
     <string name="unknown_error">An unknown error occurred</string>
     <string name="credit_score_unavailable">Credit score unavailable</string>
+    <string name="fetch_error">We could not retrieve your latest credit score. Please check your internet connection and try again.</string>
 </resources>
