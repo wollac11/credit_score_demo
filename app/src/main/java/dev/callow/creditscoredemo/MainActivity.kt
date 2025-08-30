@@ -100,6 +100,7 @@ fun CreditScoreScreen(uiState: CreditReportUiState, modifier: Modifier = Modifie
 @Composable
 fun DonutView(value: Int, maxValue: Int, strokeWidth: Dp = 10.dp, size: Dp = 250.dp, label: String = "") {
     val angle = remember(value, maxValue) { 360f * value / maxValue.toFloat() }
+    val scoreColor = determineScoreColor(value = value, maxValue = maxValue) // Determine colour based on score
 
     Box(contentAlignment = Alignment.Center, modifier = Modifier.requiredSize(size)) {
         Canvas(modifier = Modifier.size(size)) {
@@ -114,7 +115,7 @@ fun DonutView(value: Int, maxValue: Int, strokeWidth: Dp = 10.dp, size: Dp = 250
             )
             // Foreground arc
             drawArc(
-                color = Color.Blue,
+                color = scoreColor,
                 startAngle = -90f, // Start from the top
                 sweepAngle = angle,
                 useCenter = false,
@@ -133,7 +134,7 @@ fun DonutView(value: Int, maxValue: Int, strokeWidth: Dp = 10.dp, size: Dp = 250
             // Value
             Text(
                 text = value.toString(),
-                color = Color.Black,
+                color = scoreColor,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
                 fontWeight = FontWeight.Light,
@@ -159,5 +160,17 @@ fun DonutViewPreview() {
         Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
             DonutView(value = 327, maxValue = 700, label = stringResource(R.string.credit_score_label))
         }
+    }
+}
+
+@Composable
+fun determineScoreColor(value: Int, maxValue: Int): Color {
+    if (maxValue == 0) return Color.Gray // Handle division by zero or invalid max
+    val percentage = value.toFloat() / maxValue.toFloat()
+    return when {
+        percentage <= 0.25f -> Color.Red
+        percentage <= 0.50f -> Color(0xFFFFA500) // Orange
+        percentage <= 0.75f -> Color.Yellow
+        else -> Color.Green
     }
 }
