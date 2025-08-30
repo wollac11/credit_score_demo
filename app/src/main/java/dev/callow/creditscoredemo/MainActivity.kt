@@ -110,17 +110,18 @@ fun DonutView(value: Int, maxValue: Int, strokeWidth: Dp = 4.dp, size: Dp = 250.
     val angle = remember(value, maxValue) { 360f * value / maxValue.toFloat() }
     val scoreColor = determineScoreColor(value = value, maxValue = maxValue) // Determine colour based on score
     var animationPlayed by remember { mutableStateOf(false) }
+    val isAnimationEnabled = animationDurationMillis > 0
 
     // Score arc animation (run when first displayed or value changes)
     val animatedAngle by animateFloatAsState(
-        targetValue = if (animationPlayed) angle else 0f,
+        targetValue = if (!isAnimationEnabled || animationPlayed) angle else 0f,
         animationSpec = tween(durationMillis = animationDurationMillis),
         label = "DonutViewAngleAnimation"
     )
 
     // Value text animation (run when first displayed or value changes)
     val animatedValue by animateIntAsState(
-        targetValue = if (animationPlayed) value else 0,
+        targetValue = if (!isAnimationEnabled || animationPlayed) value else 0,
         animationSpec = tween(durationMillis = animationDurationMillis),
         label = "DonutViewValueAnimation"
     )
@@ -188,7 +189,7 @@ fun DonutView(value: Int, maxValue: Int, strokeWidth: Dp = 4.dp, size: Dp = 250.
 fun DonutViewPreview() {
     CreditScoreDemoTheme {
         Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-            DonutView(value = 327, maxValue = 700, label = stringResource(R.string.credit_score_label))
+            DonutView(value = 327, maxValue = 700, label = stringResource(R.string.credit_score_label), animationDurationMillis = 0)
         }
     }
 }
