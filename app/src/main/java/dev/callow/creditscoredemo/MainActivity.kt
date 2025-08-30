@@ -5,6 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,9 +21,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -103,6 +108,18 @@ fun CreditScoreScreen(uiState: CreditReportUiState, modifier: Modifier = Modifie
 fun DonutView(value: Int, maxValue: Int, strokeWidth: Dp = 4.dp, size: Dp = 250.dp, label: String = "") {
     val angle = remember(value, maxValue) { 360f * value / maxValue.toFloat() }
     val scoreColor = determineScoreColor(value = value, maxValue = maxValue) // Determine colour based on score
+    var animationPlayed by remember { mutableStateOf(false) }
+
+    // Score arc animation (run when first displayed or value changes)
+    val animatedAngle by animateFloatAsState(
+        targetValue = if (animationPlayed) angle else 0f,
+        animationSpec = tween(durationMillis = 1000),
+        label = "DonutViewAngleAnimation"
+    )
+
+    LaunchedEffect(key1 = true) {
+        animationPlayed = true
+    }
 
     Box(contentAlignment = Alignment.Center, modifier = Modifier.requiredSize(size)) {
         Canvas(modifier = Modifier.size(size)) {
@@ -120,7 +137,7 @@ fun DonutView(value: Int, maxValue: Int, strokeWidth: Dp = 4.dp, size: Dp = 250.
             drawArc(
                 color = scoreColor,
                 startAngle = -90f, // Start from the top
-                sweepAngle = angle,
+                sweepAngle = animatedAngle,
                 useCenter = false,
                 style = Stroke(width = strokeWidthPx, cap = StrokeCap.Round),
                 topLeft = Offset(inset, inset),
