@@ -60,6 +60,8 @@ The `CreditScoreViewModelTests` class contains unit tests that cover the followi
     
 2.  **Failure:** Verifies that the UI state transitions from `Loading` to `Error` when the API call fails, ensuring the correct error message is propagated.
 
+The tests use a `MainCoroutineRule` to manage the dispatcher for coroutines in a test environment.
+
 
 ## Future Improvements & Extensions
 
@@ -82,8 +84,6 @@ The current application is fairly simple but provides a solid foundation. Given 
 -   **Accessibility:** Add content descriptions and other accessibility features to ensure the app is fully usable with screen readers like TalkBack.
     
 -   **Localisation:** Provide translations for all user-facing strings to make the app accessible to a wider audience.
-
-The tests use a `MainCoroutineRule` to manage the dispatcher for coroutines in a test environment.
 
 ## How to Build and Run
 
