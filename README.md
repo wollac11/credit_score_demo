@@ -2,6 +2,9 @@
 
 This is an Android application built for a technical task that fetches a user's credit score from a remote endpoint and displays it in a custom, animated donut view using Jetpack Compose.
 
+<img width="2400" height="1080" alt="Screenshot_20250831_114315" src="https://github.com/user-attachments/assets/00b9186c-96f5-4305-afb3-31167947340f" />
+
+
 ## Features
 
 -   **Donut View:** A custom, animated donut view that visualises the credit score.
