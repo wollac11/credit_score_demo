@@ -1,3 +1,4 @@
+import android.content.Context
 import app.cash.turbine.test
 import dev.callow.creditscoredemo.data.model.CoachingSummary
 import dev.callow.creditscoredemo.data.model.CreditReportInfo
@@ -7,6 +8,7 @@ import dev.callow.creditscoredemo.ui.CreditReportUiState
 import dev.callow.creditscoredemo.ui.CreditScoreViewModel
 import dev.callow.creditscoredemo.util.MainCoroutineRule
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -24,10 +26,14 @@ class CreditScoreViewModelTests {
 
     private lateinit var viewModel: CreditScoreViewModel
     private lateinit var mockRepository: CreditReportRepository
+    private lateinit var mockContext: Context
 
     @Before
     fun setUp() {
         mockRepository = mockk()
+        mockContext = mockk()
+        // This simulates applicationContext.getString(R.string.fetch_error) in the VM
+        every { mockContext.getString(any()) } returns "Mocked error message"
     }
 
     @Test
@@ -80,7 +86,7 @@ class CreditScoreViewModelTests {
 
         coEvery { mockRepository.getCreditReport() } returns mockSuccessResponse
 
-        viewModel = CreditScoreViewModel(mockRepository)
+        viewModel = CreditScoreViewModel(mockRepository, mockContext)
 
         viewModel.creditReport.test {
             // Assert the initial state is set to loading
@@ -103,7 +109,7 @@ class CreditScoreViewModelTests {
         val errorMessage = "Network error"
         coEvery { mockRepository.getCreditReport() } throws RuntimeException(errorMessage)
 
-        viewModel = CreditScoreViewModel(mockRepository)
+        viewModel = CreditScoreViewModel(mockRepository, mockContext)
 
         viewModel.creditReport.test {
             // Assert that the initial state is Loading
