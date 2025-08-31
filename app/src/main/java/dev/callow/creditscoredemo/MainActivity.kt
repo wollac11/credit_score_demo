@@ -17,8 +17,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -39,6 +42,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -113,7 +117,7 @@ fun CreditScoreScreen(uiState: CreditReportUiState, modifier: Modifier = Modifie
                             .wrapContentSize(Alignment.Center)
                             .padding(16.dp),
                         textAlign = TextAlign.Center,
-                        fontSize = 18.sp,
+                        fontSize = MaterialTheme.typography.titleLarge.fontSize,
                         color = Color.Gray
                     )
                 }
@@ -170,31 +174,52 @@ fun DonutView(value: Int, maxValue: Int, strokeWidth: Dp = 4.dp, size: Dp = 250.
                 size = Size(this.size.width - 2 * inset, this.size.height - 2 * inset)
             )
         }
-        Column {
+        Column(modifier = Modifier.padding(24.dp)) {
             // Label
-            Text(
+            BasicText(
                 text = label,
-                color = Color.Black,
-                textAlign = TextAlign.Center,
+                style = TextStyle(
+                    color = Color.Black,
+                    textAlign = TextAlign.Center,
+                ),
+                autoSize = TextAutoSize.StepBased(
+                    minFontSize = MaterialTheme.typography.bodySmall.fontSize,
+                    maxFontSize = MaterialTheme.typography.titleMedium.fontSize,
+                    stepSize = 1.sp,
+                ),
                 modifier = Modifier.fillMaxWidth(),
-                fontSize = (size.value / 14).dp.value.toInt().sp // Adjust font size based on diameter
+                maxLines = 1
             )
             // Value
-            Text(
+            BasicText(
                 text = animatedValue.toString(),
-                color = scoreColor,
-                textAlign = TextAlign.Center,
+                style = TextStyle(
+                    color = scoreColor,
+                    fontWeight = FontWeight.Light,
+                    textAlign = TextAlign.Center,
+                ),
+                autoSize = TextAutoSize.StepBased(
+                    minFontSize = MaterialTheme.typography.bodySmall.fontSize,
+                    maxFontSize = MaterialTheme.typography.displayLarge.fontSize,
+                    stepSize = 5.sp,
+                ),
                 modifier = Modifier.fillMaxWidth(),
-                fontWeight = FontWeight.Light,
-                fontSize = (size.value / 4).dp.value.toInt().sp // Adjust font size based on diameter
+                maxLines = 1,
             )
             // Max value
-            Text(
+            BasicText(
                 text = stringResource(R.string.total_score_label, maxValue),
-                color = Color.Black,
-                textAlign = TextAlign.Center,
+                style = TextStyle(
+                    color = Color.Black,
+                    textAlign = TextAlign.Center,
+                ),
+                autoSize = TextAutoSize.StepBased(
+                    minFontSize = MaterialTheme.typography.bodySmall.fontSize,
+                    maxFontSize = MaterialTheme.typography.titleMedium.fontSize,
+                    stepSize = 1.sp,
+                ),
                 modifier = Modifier.fillMaxWidth(),
-                fontSize = (size.value / 14).dp.value.toInt().sp // Adjust font size based on diameter
+                maxLines = 1
             )
         }
 
@@ -206,7 +231,7 @@ fun DonutView(value: Int, maxValue: Int, strokeWidth: Dp = 4.dp, size: Dp = 250.
 fun DonutViewPreview() {
     CreditScoreDemoTheme {
         Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-            DonutView(value = 327, maxValue = 700, label = stringResource(R.string.credit_score_label), animationDurationMillis = 0)
+            DonutView(value = 327, maxValue = 700, label = stringResource(R.string.credit_score_label), animationDurationMillis = 0, size = 250.dp)
         }
     }
 }
