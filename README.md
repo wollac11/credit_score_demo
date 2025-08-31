@@ -59,7 +59,29 @@ The `CreditScoreViewModelTests` class contains unit tests that cover the followi
 1.  **Success:** Verifies that the UI state correctly transitions from `Loading` to `Success` when the API call is successful.
     
 2.  **Failure:** Verifies that the UI state transitions from `Loading` to `Error` when the API call fails, ensuring the correct error message is propagated.
+
+
+## Future Improvements & Extensions
+
+The current application is fairly simple but provides a solid foundation. Given more time, the following improvements could be made to enhance its functionality and robustness:
+
+-   **Persistence and Caching:** Implement a local database using `Room` to cache the credit report data. This would provide offline support and a faster, more seamless user experience on subsequent app launches.
     
+-   **Expanded Test Coverage:**
+	-    Introduce UI/e2e tests to verify UI behaviour and interactions.
+ 	-    Add integration tests for the repository and data layers.
+    
+-   **Enhanced Data Refreshing:**
+    -   Implement a pull-to-refresh gesture on the main screen.
+    -   Add a mechanism to auto-refresh the data when the app detects a restored internet connection.
+        
+-   **UI Enhancements:**
+    -   Apply a colour gradient to the donut view's arc for a more polished visual effect.
+    -   Display more information from the `CreditReportResponse`, such as the positive and negative score factors.
+        
+-   **Accessibility:** Add content descriptions and other accessibility features to ensure the app is fully usable with screen readers like TalkBack.
+    
+-   **Localisation:** Provide translations for all user-facing strings to make the app accessible to a wider audience.
 
 The tests use a `MainCoroutineRule` to manage the dispatcher for coroutines in a test environment.
 
