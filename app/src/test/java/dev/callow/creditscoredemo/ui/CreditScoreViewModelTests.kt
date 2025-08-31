@@ -26,6 +26,8 @@ class CreditScoreViewModelTests {
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
 
+    private val mockErrorMessage: String = "Mocked error message"
+
     private lateinit var viewModel: CreditScoreViewModel
     private lateinit var mockRepository: CreditReportRepository
     private lateinit var mockContext: Context
@@ -45,7 +47,7 @@ class CreditScoreViewModelTests {
         mockRepository = mockk()
         mockContext = mockk()
         // This simulates applicationContext.getString(R.string.fetch_error) in the VM
-        every { mockContext.getString(any()) } returns "Mocked error message"
+        every { mockContext.getString(any()) } returns mockErrorMessage
     }
 
     @Test
@@ -118,8 +120,7 @@ class CreditScoreViewModelTests {
 
     @Test
     fun `fetchCreditReport failure transitions from Loading to Error`() = runTest {
-        val errorMessage = "Network error"
-        coEvery { mockRepository.getCreditReport() } throws RuntimeException(errorMessage)
+        coEvery { mockRepository.getCreditReport() } throws RuntimeException("This error should show in the console")
 
         viewModel = CreditScoreViewModel(mockRepository, mockContext)
 
@@ -133,7 +134,8 @@ class CreditScoreViewModelTests {
             // Expect the Error state
             val errorState = awaitItem()
             assertTrue(errorState is CreditReportUiState.Error)
-            assertEquals(errorMessage, (errorState as CreditReportUiState.Error).message)
+            // Error message should come from mocked context and not be the exception message
+            assertEquals(mockErrorMessage, (errorState as CreditReportUiState.Error).message)
 
             cancelAndConsumeRemainingEvents()
         }
