@@ -1,4 +1,5 @@
 import android.content.Context
+import android.util.Log
 import app.cash.turbine.test
 import dev.callow.creditscoredemo.data.model.CoachingSummary
 import dev.callow.creditscoredemo.data.model.CreditReportInfo
@@ -10,6 +11,7 @@ import dev.callow.creditscoredemo.util.MainCoroutineRule
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkStatic
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -30,6 +32,16 @@ class CreditScoreViewModelTests {
 
     @Before
     fun setUp() {
+        mockkStatic(Log::class)
+
+        // Capture and print Log.d calls
+        every { Log.d(any(), any()) } answers {
+            val tag = firstArg<String>()
+            val msg = secondArg<String>()
+            println("LOG.D (mock): $tag: $msg")
+            0
+        }
+
         mockRepository = mockk()
         mockContext = mockk()
         // This simulates applicationContext.getString(R.string.fetch_error) in the VM
